@@ -7,15 +7,20 @@
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
 
   :root{
-    --ink:#232B4D;
-    --ink-soft:#5A6180;
-    --paper:#FAFAF8;
-    --panel:#F1F0EC;
-    --line:#DEDCD3;
-    --accent:#3A3D8F;
-    --accent-soft:#E7E7F5;
-    --danger:#B23A3A;
-    --radius:10px;
+    --ink:#191F28;
+    --ink-soft:#8B95A1;
+    --ink-faint:#B0B8C1;
+    --paper:#FFFFFF;
+    --panel:#F2F4F6;
+    --panel-deep:#E8EBEF;
+    --line:#E5E8EB;
+    --accent:#3182F6;
+    --accent-strong:#1B64DA;
+    --accent-soft:#EBF2FF;
+    --danger:#F04452;
+    --danger-soft:#FDECEC;
+    --radius:14px;
+    --radius-sm:10px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:var(--panel);font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;color:var(--ink);}
@@ -23,57 +28,71 @@
   .app{display:grid;grid-template-columns:380px 1fr;min-height:100vh;}
 
   /* ---------- Editor panel ---------- */
-  .editor{background:var(--paper);border-right:1px solid var(--line);padding:24px;overflow-y:auto;max-height:100vh;}
-  .editor h1{font-size:17px;margin:0 0 4px;letter-spacing:-0.01em;}
-  .editor .sub{font-size:12px;color:var(--ink-soft);margin:0 0 20px;}
-  .section{margin-bottom:22px;}
-  .section-title{font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:8px;}
-  label{display:block;font-size:12px;color:var(--ink-soft);margin:10px 0 4px;}
+  .editor{background:var(--paper);border-right:1px solid var(--line);padding:32px 26px 44px;overflow-y:auto;max-height:100vh;}
+  .editor::-webkit-scrollbar{width:6px;}
+  .editor::-webkit-scrollbar-track{background:transparent;}
+  .editor::-webkit-scrollbar-thumb{background:var(--panel-deep);border-radius:10px;}
+  .editor h1{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;margin:0 0 6px;letter-spacing:-0.02em;}
+  .editor h1::before{content:'';width:9px;height:9px;border-radius:3px;background:var(--accent);flex-shrink:0;}
+  .editor .sub{font-size:13px;color:var(--ink-soft);margin:0 0 26px;padding-bottom:22px;border-bottom:1px solid var(--line);line-height:1.5;}
+  .section{margin-bottom:14px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 18px;}
+  .section-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-0.01em;}
+  label{display:block;font-size:12px;font-weight:500;color:var(--ink-soft);margin:12px 0 6px;}
   input[type=text],textarea,select,input[type=number]{
-    width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
-    font-family:inherit;font-size:13px;background:#fff;color:var(--ink);resize:vertical;
+    width:100%;padding:11px 13px;border:1.5px solid transparent;border-radius:var(--radius-sm);
+    font-family:inherit;font-size:13.5px;background:var(--panel);color:var(--ink);resize:vertical;
+    transition:border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+  }
+  input[type=text]:focus,textarea:focus,select:focus{
+    outline:none;background:var(--paper);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);
   }
   textarea{min-height:44px;}
   .row{display:flex;gap:8px;}
   .row > *{flex:1;}
-  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
-  .seg button{flex:1;padding:7px 0;border:none;background:#fff;font-size:12px;cursor:pointer;color:var(--ink-soft);}
-  .seg button.active{background:var(--accent);color:#fff;}
-  .chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);margin-top:8px;}
-  .chk input{width:auto;}
+  .seg{display:flex;background:var(--panel);border:none;border-radius:999px;padding:3px;gap:2px;}
+  .seg button{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:999px;font-size:11.5px;font-weight:600;cursor:pointer;color:var(--ink-soft);white-space:nowrap;transition:all .15s ease;}
+  .seg button:hover:not(.active){color:var(--ink);}
+  #sideSeg button{font-size:10.5px;padding:8px 1px;}
+  .seg button.active{background:var(--paper);color:var(--accent-strong);box-shadow:0 1px 4px rgba(25,31,40,.10);}
+  .chk{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:var(--ink-soft);margin-top:8px;}
+  .chk input{width:16px;height:16px;accent-color:var(--accent);}
+  #avatarNameWrap,#textFields,#photoFields,#narrationFields{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px 18px;margin-top:12px;}
   .avatar-pick{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;}
   .avatar-pick img{width:40px;height:40px;object-fit:cover;background:var(--panel);border:1px solid var(--line);border-radius:50%;}
-  .avatar-pick input[type=file]{font-size:11px;max-width:150px;}
-  .btn-clear-avatar{border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:7px;padding:5px 9px;font-size:11px;cursor:pointer;}
-  .btn-clear-avatar:hover{background:var(--panel);color:var(--danger);}
-  .btn{cursor:pointer;border:none;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;}
-  .btn-primary{background:var(--accent);color:#fff;width:100%;margin-top:14px;}
-  .btn-primary:hover{background:#2c2f70;}
-  .btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line);}
-  .btn-ghost:hover{background:var(--accent-soft);color:var(--accent);}
+  .avatar-pick input[type=file]{font-size:11px;max-width:150px;color:var(--ink-soft);}
+  .btn-clear-avatar{border:none;background:var(--panel);color:var(--ink-soft);border-radius:999px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s ease;}
+  .btn-clear-avatar:hover{background:var(--danger-soft);color:var(--danger);}
+  .btn{cursor:pointer;border:none;border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;}
+  .btn-primary{background:var(--accent);color:#fff;width:100%;margin-top:18px;padding:14px;font-size:14px;border-radius:14px;box-shadow:0 8px 20px -8px rgba(49,130,246,.6);transition:all .15s ease;}
+  .btn-primary:hover{background:var(--accent-strong);box-shadow:0 10px 22px -8px rgba(27,100,218,.65);transform:translateY(-1px);}
+  .btn-primary:active{transform:translateY(0);}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line);}
+  .btn-ghost:hover{background:var(--accent-soft);color:var(--accent-strong);border-color:var(--accent-soft);}
 
-  .list{display:flex;flex-direction:column;gap:6px;}
-  .item{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff;font-size:12px;display:flex;align-items:center;gap:8px;}
-  .item .tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);flex-shrink:0;}
-  .item .txt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-soft);}
+  .list{display:flex;flex-direction:column;gap:8px;}
+  .item{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);font-size:12.5px;display:flex;align-items:center;gap:8px;transition:border-color .15s ease;}
+  .item:hover{border-color:var(--accent);}
+  .item .tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);flex-shrink:0;}
+  .item .txt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);}
   .item .actions{display:flex;gap:2px;flex-shrink:0;}
-  .item .actions button{background:none;border:none;cursor:pointer;font-size:13px;padding:3px 5px;color:var(--ink-soft);border-radius:4px;}
-  .item .actions button:hover{background:var(--panel);color:var(--ink);}
-  .empty-hint{font-size:12px;color:var(--ink-soft);text-align:center;padding:14px 0;}
+  .item .actions button{background:none;border:none;cursor:pointer;font-size:13px;padding:4px 6px;color:var(--ink-soft);border-radius:8px;transition:all .15s ease;}
+  .item .actions button:hover{background:var(--accent-soft);color:var(--accent-strong);}
+  .empty-hint{font-size:12.5px;color:var(--ink-faint);text-align:center;padding:22px 12px;border:1.5px dashed var(--line);border-radius:12px;background:var(--panel);}
 
   .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .color-field{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fff;}
-  .color-field input[type=color]{width:26px;height:26px;border:none;padding:0;background:none;}
-  .color-field span{font-size:11px;color:var(--ink-soft);}
+  .color-field{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:12px;padding:5px 10px;background:var(--panel);}
+  .color-field input[type=color]{width:26px;height:26px;border:none;padding:0;background:none;border-radius:8px;overflow:hidden;}
+  .color-field span{font-size:11px;color:var(--ink-soft);font-weight:500;}
 
   /* ---------- Preview panel ---------- */
   .preview-wrap{padding:24px;overflow-y:auto;max-height:100vh;}
   .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap;}
   .toolbar .title{font-size:13px;color:var(--ink-soft);}
   .toolbar .actions{display:flex;gap:8px;}
-  .btn-export{background:var(--ink);color:#fff;padding:9px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;}
-  .btn-export:hover{background:#151a34;}
-  .btn-export.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);}
+  .btn-export{background:var(--ink);color:#fff;padding:10px 18px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s ease;}
+  .btn-export:hover{background:#0E1420;}
+  .btn-export.secondary{background:var(--paper);color:var(--ink);border:1.5px solid var(--line);}
+  .btn-export.secondary:hover{background:var(--panel);}
 
   #stage-outer{display:flex;justify-content:center;}
   #stage{background:#ffffff;padding:44px 40px;}
@@ -90,7 +109,10 @@
   .bubble-group.left .bubble{border-top-left-radius:4px;}
   .bubble-group.right .bubble{border-top-right-radius:4px;}
   .bubble .text{font-size:15px;font-weight:500;}
+  .photo-msg{max-width:260px;max-height:320px;border-radius:14px;display:block;object-fit:cover;}
+  .photo-caption{font-size:13px;color:#4a4a4a;margin-top:6px;}
   .narration{font-size:14.5px;line-height:1.85;color:#262626;padding:2px 2px 0;}
+  .center-msg{font-size:15px;font-weight:500;line-height:1.6;color:#262626;text-align:center;padding:2px 2px 0;}
   .spacer-top{height:10px;}
 
   @media (max-width:900px){
@@ -100,18 +122,18 @@
   }
 
   /* ---------- Crop modal ---------- */
-  .crop-overlay{position:fixed;inset:0;background:rgba(20,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:50;}
-  .crop-box{background:#fff;border-radius:14px;padding:20px;width:320px;box-shadow:0 20px 50px rgba(0,0,0,.25);}
-  .crop-title{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink);}
-  .crop-viewport{position:relative;width:280px;height:280px;overflow:hidden;border-radius:10px;background:#111;cursor:grab;margin:0 auto;}
+  .crop-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:50;}
+  .crop-box{background:var(--paper);border-radius:20px;padding:22px;width:320px;box-shadow:0 24px 60px rgba(15,23,42,.22);}
+  .crop-title{font-size:15px;font-weight:800;margin-bottom:14px;color:var(--ink);letter-spacing:-0.01em;}
+  .crop-viewport{position:relative;width:280px;height:280px;overflow:hidden;border-radius:16px;background:#111;cursor:grab;margin:0 auto;}
   .crop-viewport:active{cursor:grabbing;}
   .crop-viewport img{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none;-webkit-user-drag:none;}
   .crop-ring{position:absolute;inset:0;pointer-events:none;border:2px dashed rgba(255,255,255,.55);border-radius:10px;}
-  .crop-controls{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12px;color:var(--ink-soft);}
-  .crop-controls input{flex:1;}
-  .crop-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
-  .crop-actions .btn-ghost{padding:8px 14px;}
-  .crop-actions .btn-export{padding:8px 16px;font-size:13px;}
+  .crop-controls{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:12px;color:var(--ink-soft);}
+  .crop-controls input{flex:1;accent-color:var(--accent);}
+  .crop-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+  .crop-actions .btn-ghost{padding:9px 15px;border-radius:12px;}
+  .crop-actions .btn-export{padding:9px 17px;font-size:13px;border-radius:12px;}
 </style>
 </head>
 <body>
@@ -127,42 +149,82 @@
       <div class="section-title">블록 종류</div>
       <div class="seg" id="typeSeg">
         <button data-v="bubble" class="active">대사</button>
+        <button data-v="image">사진</button>
         <button data-v="narration">나레이션</button>
       </div>
     </div>
 
-    <div id="bubbleFields">
+    <div id="speakerFields">
       <div class="section">
         <div class="section-title">말풍선 방향</div>
         <div class="seg" id="sideSeg">
-          <button data-v="left" class="active">왼쪽</button>
-          <button data-v="right">오른쪽</button>
+          <button data-v="left" class="active">왼쪽(말풍선)</button>
+          <button data-v="right">오른쪽(말풍선)</button>
+          <button data-v="center" id="sideCenterBtn">가운데(나레이션)</button>
         </div>
       </div>
 
-      <label class="chk" style="margin-top:0;"><input type="checkbox" id="showAvatar" checked> 아바타/이름 표시</label>
+      <div id="avatarNameWrap">
+        <div class="row" style="margin-top:10px;">
+          <label class="chk" style="margin-top:0;"><input type="checkbox" id="showAvatar" checked> 아바타 표시</label>
+          <label class="chk" style="margin-top:0;"><input type="checkbox" id="showName" checked> 이름 표시</label>
+        </div>
 
-      <div id="avatarNameFields">
-        <label>아바타 이미지</label>
-        <div class="avatar-pick">
-          <img id="avatarPreview" src="" style="display:none;">
-          <input type="file" id="avatarInput" accept="image/*">
-          <button type="button" class="btn-clear-avatar" id="cropAgainBtn" style="display:none;">다시 자르기</button>
-          <button type="button" class="btn-clear-avatar" id="clearAvatarBtn">이미지 삭제</button>
+        <div id="avatarNameFields">
+          <label>아바타 이미지</label>
+          <div class="avatar-pick">
+            <img id="avatarPreview" src="" style="display:none;">
+            <input type="file" id="avatarInput" accept="image/*">
+            <button type="button" class="btn-clear-avatar" id="cropAgainBtn" style="display:none;">다시 자르기</button>
+            <button type="button" class="btn-clear-avatar" id="clearAvatarBtn">이미지 삭제</button>
+          </div>
+          <div class="seg" id="shapeSeg" style="margin-top:8px;">
+            <button data-v="circle" class="active">동그라미</button>
+            <button data-v="square">네모</button>
+          </div>
+          <label>이름</label>
+          <input type="text" id="nameInput" placeholder="문구를 입력해 주세요">
+          <label>이름 색</label>
+          <div class="color-field" style="width:fit-content;">
+            <input type="color" id="nameColor" value="#232B4D"><span>이름 색상</span>
+          </div>
         </div>
-        <div class="seg" id="shapeSeg" style="margin-top:8px;">
-          <button data-v="circle" class="active">동그라미</button>
-          <button data-v="square">네모</button>
-        </div>
-        <label>이름</label>
-        <input type="text" id="nameInput" placeholder="문구를 입력해 주세요">
       </div>
+    </div>
 
+    <div id="textFields">
       <label>텍스트</label>
       <textarea id="textInput" placeholder="문구를 입력해 주세요"></textarea>
     </div>
 
+    <div id="photoFields" style="display:none;">
+      <label>사진 모서리</label>
+      <div class="seg" id="photoShapeSeg">
+        <button data-v="rounded" class="active">둥근 모서리</button>
+        <button data-v="square">각진 네모</button>
+      </div>
+      <label>보낼 사진</label>
+      <div class="avatar-pick">
+        <img id="photoPreview" src="" style="display:none;width:64px;height:64px;border-radius:8px;">
+        <input type="file" id="photoInput" accept="image/*">
+        <button type="button" class="btn-clear-avatar" id="clearPhotoBtn">이미지 삭제</button>
+      </div>
+      <label>캡션 (선택)</label>
+      <input type="text" id="captionInput" placeholder="문구를 입력해 주세요">
+    </div>
+
     <div id="narrationFields" style="display:none;">
+      <label>정렬</label>
+      <div class="seg" id="narAlignSeg">
+        <button data-v="left" class="active">왼쪽</button>
+        <button data-v="center">가운데</button>
+        <button data-v="right">오른쪽</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="narItalic"> 기울임(이탤릭)</label>
+      <label>글자 색</label>
+      <div class="color-field" style="width:fit-content;">
+        <input type="color" id="narColor" value="#262626"><span>나레이션 색상</span>
+      </div>
       <label>나레이션 본문</label>
       <textarea id="narrationInput" style="min-height:90px;" placeholder="문구를 입력해 주세요"></textarea>
     </div>
@@ -231,7 +293,10 @@
   let blockType = 'bubble';
   let side = 'left';
   let currentAvatar = '';
+  let currentPhoto = '';
+  let photoShape = 'rounded';
   let avatarShape = 'circle';
+  let narAlign = 'left';
   let lastAvatarLeft = '';
   let lastAvatarRight = '';
   let editingId = null;
@@ -239,24 +304,55 @@
   const $ = id => document.getElementById(id);
 
   // ---- type / side segmented controls ----
+  function updateAvatarNameWrapVisibility(){
+    $('avatarNameWrap').style.display = side==='center' ? 'none' : 'block';
+  }
+
+  function showFieldsFor(type){
+    $('speakerFields').style.display = (type==='bubble' || type==='image') ? 'block':'none';
+    $('textFields').style.display = type==='bubble' ? 'block':'none';
+    $('photoFields').style.display = type==='image' ? 'block':'none';
+    $('narrationFields').style.display = type==='narration' ? 'block':'none';
+    $('sideCenterBtn').style.display = type==='image' ? '' : 'none';
+    if(type==='bubble' && side==='center'){
+      side = 'left';
+      [...$('sideSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===side));
+      currentAvatar = lastAvatarLeft;
+      updateAvatarPreview();
+    }
+    updateAvatarNameWrapVisibility();
+  }
+
   $('typeSeg').addEventListener('click', e=>{
     const b = e.target.closest('button'); if(!b) return;
     blockType = b.dataset.v;
     [...$('typeSeg').children].forEach(x=>x.classList.toggle('active', x===b));
-    $('bubbleFields').style.display = blockType==='bubble' ? 'block':'none';
-    $('narrationFields').style.display = blockType==='narration' ? 'block':'none';
+    showFieldsFor(blockType);
+  });
+
+  $('photoShapeSeg').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    photoShape = b.dataset.v;
+    [...$('photoShapeSeg').children].forEach(x=>x.classList.toggle('active', x===b));
   });
 
   $('sideSeg').addEventListener('click', e=>{
     const b = e.target.closest('button'); if(!b) return;
     side = b.dataset.v;
     [...$('sideSeg').children].forEach(x=>x.classList.toggle('active', x===b));
-    currentAvatar = side==='left' ? lastAvatarLeft : lastAvatarRight;
+    if(side==='center'){
+      currentAvatar = '';
+    } else {
+      currentAvatar = side==='left' ? lastAvatarLeft : lastAvatarRight;
+    }
     updateAvatarPreview();
+    updateAvatarNameWrapVisibility();
   });
 
-  $('showAvatar').addEventListener('change', ()=>{
-    $('avatarNameFields').style.display = $('showAvatar').checked ? 'block':'none';
+  $('narAlignSeg').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    narAlign = b.dataset.v;
+    [...$('narAlignSeg').children].forEach(x=>x.classList.toggle('active', x===b));
   });
 
   $('avatarInput').addEventListener('change', e=>{
@@ -283,6 +379,25 @@
     $('cropAgainBtn').style.display = 'none';
     updateAvatarPreview();
   });
+
+  $('photoInput').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{ currentPhoto = reader.result; updatePhotoPreview(); };
+    reader.readAsDataURL(f);
+  });
+
+  $('clearPhotoBtn').addEventListener('click', ()=>{
+    currentPhoto = '';
+    $('photoInput').value = '';
+    updatePhotoPreview();
+  });
+
+  function updatePhotoPreview(){
+    const img = $('photoPreview');
+    if(currentPhoto){ img.src = currentPhoto; img.style.display='block'; }
+    else{ img.style.display='none'; img.src=''; }
+  }
 
   function updateAvatarPreview(){
     const img = $('avatarPreview');
@@ -372,11 +487,14 @@
 
   function clearForm(){
     $('textInput').value=''; $('nameInput').value='';
-    $('narrationInput').value='';
-    currentAvatar = side==='left' ? lastAvatarLeft : lastAvatarRight;
+    $('narrationInput').value=''; $('captionInput').value='';
+    currentAvatar = side==='center' ? '' : (side==='left' ? lastAvatarLeft : lastAvatarRight);
     updateAvatarPreview();
+    currentPhoto = '';
+    updatePhotoPreview();
+    $('photoInput').value = '';
     $('showAvatar').checked = true;
-    $('avatarNameFields').style.display='block';
+    $('showName').checked = true;
     editingId = null;
     $('addBtn').textContent = '+ 블록 추가';
   }
@@ -385,18 +503,34 @@
     if(blockType==='bubble'){
       const text = $('textInput').value.trim();
       if(!text){ alert('텍스트를 입력해 주세요.'); return; }
-      const showAv = $('showAvatar').checked;
-      if(currentAvatar){ if(side==='left') lastAvatarLeft=currentAvatar; else lastAvatarRight=currentAvatar; }
+      const isCenter = side==='center';
+      const showAv = !isCenter && $('showAvatar').checked;
+      const showNm = !isCenter && $('showName').checked;
+      if(!isCenter && currentAvatar){ if(side==='left') lastAvatarLeft=currentAvatar; else lastAvatarRight=currentAvatar; }
       const obj = {
         id: editingId || crypto.randomUUID(), type:'bubble', side,
-        avatar: showAv ? currentAvatar : '', name: showAv ? $('nameInput').value.trim() : '',
+        avatar: showAv ? currentAvatar : '', name: showNm ? $('nameInput').value.trim() : '',
+        nameColor: $('nameColor').value,
         shape: avatarShape, text
+      };
+      upsert(obj);
+    } else if(blockType==='image'){
+      if(!currentPhoto){ alert('보낼 사진을 선택해 주세요.'); return; }
+      const isCenter = side==='center';
+      const showAv = !isCenter && $('showAvatar').checked;
+      const showNm = !isCenter && $('showName').checked;
+      if(!isCenter && currentAvatar){ if(side==='left') lastAvatarLeft=currentAvatar; else lastAvatarRight=currentAvatar; }
+      const obj = {
+        id: editingId || crypto.randomUUID(), type:'image', side,
+        avatar: showAv ? currentAvatar : '', name: showNm ? $('nameInput').value.trim() : '',
+        nameColor: $('nameColor').value,
+        shape: avatarShape, photoShape, photo: currentPhoto, caption: $('captionInput').value.trim()
       };
       upsert(obj);
     } else {
       const text = $('narrationInput').value.trim();
       if(!text){ alert('나레이션 내용을 입력해 주세요.'); return; }
-      upsert({ id: editingId || crypto.randomUUID(), type:'narration', text });
+      upsert({ id: editingId || crypto.randomUUID(), type:'narration', text, align:narAlign, italic:$('narItalic').checked, color:$('narColor').value });
     }
     clearForm();
     render();
@@ -407,26 +541,43 @@
     if(idx>-1) messages[idx]=obj; else messages.push(obj);
   }
 
+  function loadSpeakerFields(m){
+    side = m.side;
+    [...$('sideSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===side));
+    updateAvatarNameWrapVisibility();
+    $('nameInput').value=m.name||'';
+    $('nameColor').value = m.nameColor || '#232B4D';
+    currentAvatar = m.avatar||''; avatarShape = m.shape||'circle';
+    [...$('shapeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===avatarShape));
+    updateAvatarPreview();
+    $('showAvatar').checked = !!m.avatar;
+    $('showName').checked = !!m.name;
+  }
+
   function editItem(id){
     const m = messages.find(x=>x.id===id); if(!m) return;
     editingId = id;
+    blockType = m.type;
+    if(m.type==='image'){
+      photoShape = m.photoShape||'rounded';
+      [...$('photoShapeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===photoShape));
+    }
+    [...$('typeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===blockType));
+    showFieldsFor(blockType);
     if(m.type==='bubble'){
-      blockType='bubble'; side=m.side;
-      [...$('typeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v==='bubble'));
-      [...$('sideSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===side));
-      $('bubbleFields').style.display='block'; $('narrationFields').style.display='none';
+      loadSpeakerFields(m);
       $('textInput').value=m.text;
-      $('nameInput').value=m.name||'';
-      currentAvatar = m.avatar||''; avatarShape = m.shape||'circle';
-      [...$('shapeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===avatarShape));
-      updateAvatarPreview();
-      $('showAvatar').checked = !!(m.avatar||m.name);
-      $('avatarNameFields').style.display = $('showAvatar').checked?'block':'none';
+    } else if(m.type==='image'){
+      loadSpeakerFields(m);
+      currentPhoto = m.photo||'';
+      updatePhotoPreview();
+      $('captionInput').value = m.caption||'';
     } else {
-      blockType='narration';
-      [...$('typeSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v==='narration'));
-      $('bubbleFields').style.display='none'; $('narrationFields').style.display='block';
       $('narrationInput').value=m.text;
+      narAlign = m.align||'left';
+      [...$('narAlignSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===narAlign));
+      $('narItalic').checked = !!m.italic;
+      $('narColor').value = m.color || '#262626';
     }
     $('addBtn').textContent = '블록 수정 완료';
     window.scrollTo(0,0);
@@ -458,9 +609,10 @@
     messages.forEach((m,i)=>{
       const row = document.createElement('div'); row.className='item';
       const tag = document.createElement('span'); tag.className='tag';
-      tag.textContent = m.type==='bubble' ? (m.side==='left'?'왼쪽':'오른쪽') : '나레이션';
+      const sideLabel = m.side==='left' ? '왼쪽' : (m.side==='right' ? '오른쪽' : '가운데');
+      tag.textContent = m.type==='narration' ? '나레이션' : (m.type==='image' ? '사진 · '+sideLabel : sideLabel);
       const txt = document.createElement('span'); txt.className='txt';
-      txt.textContent = m.type==='bubble' ? m.text : m.text;
+      txt.textContent = m.type==='image' ? (m.caption || '(캡션 없음)') : m.text;
       const actions = document.createElement('div'); actions.className='actions';
       actions.innerHTML = '<button data-a="up" title="위로">↑</button><button data-a="down" title="아래로">↓</button><button data-a="edit" title="수정">✎</button><button data-a="del" title="삭제">✕</button>';
       actions.querySelector('[data-a=up]').onclick=()=>moveItem(m.id,-1);
@@ -474,6 +626,15 @@
     saveDraft();
   }
 
+  function buildAvatarCol(m){
+    const col = document.createElement('div'); col.className='avatar-col';
+    const radius = m.shape==='square' ? '10px' : '50%';
+    if(m.avatar){ const img=document.createElement('img'); img.src=m.avatar; img.style.borderRadius=radius; col.appendChild(img); }
+    else { const ph=document.createElement('div'); ph.style.cssText='width:56px;height:56px;background:#eee;border-radius:'+radius+';'; col.appendChild(ph); }
+    if(m.name){ const lab=document.createElement('div'); lab.className='label'; lab.textContent=m.name; lab.style.color = m.nameColor || '#232B4D'; col.appendChild(lab); }
+    return col;
+  }
+
   function renderStage(){
     const stage = $('stage');
     const width = parseInt($('widthInput').value)||760;
@@ -485,26 +646,45 @@
       const wrap = document.createElement('div'); wrap.className='msg-row';
       if(m.type==='narration'){
         const p = document.createElement('div'); p.className='narration'; p.textContent=m.text;
+        p.style.textAlign = m.align || 'left';
+        p.style.color = m.color || '#262626';
+        if(m.italic) p.style.fontStyle = 'italic';
         wrap.appendChild(p);
-      } else {
-        const group = document.createElement('div'); group.className='bubble-group '+m.side;
-        if(m.avatar || m.name){
-          const col = document.createElement('div'); col.className='avatar-col';
-          const radius = m.shape==='square' ? '10px' : '50%';
-          if(m.avatar){ const img=document.createElement('img'); img.src=m.avatar; img.style.borderRadius=radius; col.appendChild(img); }
-          else { const ph=document.createElement('div'); ph.style.cssText='width:56px;height:56px;background:#eee;border-radius:'+radius+';'; col.appendChild(ph); }
-          if(m.name){ const lab=document.createElement('div'); lab.className='label'; lab.textContent=m.name; col.appendChild(lab); }
-          group.appendChild(col);
+      } else if(m.type==='image'){
+        const photoRadius = m.photoShape==='square' ? '0px' : '14px';
+        if(m.side==='center'){
+          const box = document.createElement('div'); box.style.cssText='display:flex;flex-direction:column;align-items:center;';
+          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg'; photo.style.borderRadius = photoRadius;
+          box.appendChild(photo);
+          if(m.caption){ const cap=document.createElement('div'); cap.className='photo-caption'; cap.style.textAlign='center'; cap.textContent=m.caption; box.appendChild(cap); }
+          wrap.appendChild(box);
+        } else {
+          const group = document.createElement('div'); group.className='bubble-group '+m.side;
+          if(m.avatar || m.name) group.appendChild(buildAvatarCol(m));
+          const bcol = document.createElement('div'); bcol.className='bubble-col';
+          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg'; photo.style.borderRadius = photoRadius;
+          bcol.appendChild(photo);
+          if(m.caption){ const cap=document.createElement('div'); cap.className='photo-caption'; cap.textContent=m.caption; bcol.appendChild(cap); }
+          group.appendChild(bcol);
+          wrap.appendChild(group);
         }
-        const bcol = document.createElement('div'); bcol.className='bubble-col';
-        const bubble = document.createElement('div'); bubble.className='bubble';
-        bubble.style.background = m.side==='left' ? lc : rc;
-        bubble.style.color = m.side==='left' ? lt : rt;
-        const text = document.createElement('div'); text.className='text'; text.textContent=m.text;
-        bubble.appendChild(text);
-        bcol.appendChild(bubble);
-        group.appendChild(bcol);
-        wrap.appendChild(group);
+      } else {
+        if(m.side==='center'){
+          const p = document.createElement('div'); p.className='center-msg'; p.textContent=m.text;
+          wrap.appendChild(p);
+        } else {
+          const group = document.createElement('div'); group.className='bubble-group '+m.side;
+          if(m.avatar || m.name) group.appendChild(buildAvatarCol(m));
+          const bcol = document.createElement('div'); bcol.className='bubble-col';
+          const bubble = document.createElement('div'); bubble.className='bubble';
+          bubble.style.background = m.side==='left' ? lc : rc;
+          bubble.style.color = m.side==='left' ? lt : rt;
+          const text = document.createElement('div'); text.className='text'; text.textContent=m.text;
+          bubble.appendChild(text);
+          bcol.appendChild(bubble);
+          group.appendChild(bcol);
+          wrap.appendChild(group);
+        }
       }
       stage.appendChild(wrap);
     });
