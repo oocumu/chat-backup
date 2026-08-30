@@ -109,7 +109,10 @@
   .bubble-group.left .bubble{border-top-left-radius:4px;}
   .bubble-group.right .bubble{border-top-right-radius:4px;}
   .bubble .text{font-size:15px;font-weight:500;}
-  .photo-msg{max-width:260px;max-height:320px;border-radius:14px;display:block;object-fit:cover;}
+  .bubble.photo-bubble{padding:5px;line-height:0;}
+  .bubble + .bubble{margin-top:6px;}
+  .photo-msg{display:block;height:auto;}
+  .photo-msg.in-bubble{display:block;}
   .photo-caption{font-size:13px;color:#4a4a4a;margin-top:6px;}
   .narration{font-size:14.5px;line-height:1.85;color:#262626;padding:2px 2px 0;}
   .center-msg{font-size:15px;font-weight:500;line-height:1.6;color:#262626;text-align:center;padding:2px 2px 0;}
@@ -209,6 +212,8 @@
         <input type="file" id="photoInput" accept="image/*">
         <button type="button" class="btn-clear-avatar" id="clearPhotoBtn">이미지 삭제</button>
       </div>
+      <label>같이 보낼 텍스트 (대사, 선택)</label>
+      <textarea id="photoTextInput" placeholder="사진과 함께 대사로 보낼 문구를 입력해 주세요" style="min-height:44px;"></textarea>
       <label>캡션 (선택)</label>
       <input type="text" id="captionInput" placeholder="문구를 입력해 주세요">
     </div>
@@ -487,7 +492,7 @@
 
   function clearForm(){
     $('textInput').value=''; $('nameInput').value='';
-    $('narrationInput').value=''; $('captionInput').value='';
+    $('narrationInput').value=''; $('captionInput').value=''; $('photoTextInput').value='';
     currentAvatar = side==='center' ? '' : (side==='left' ? lastAvatarLeft : lastAvatarRight);
     updateAvatarPreview();
     currentPhoto = '';
@@ -524,7 +529,8 @@
         id: editingId || crypto.randomUUID(), type:'image', side,
         avatar: showAv ? currentAvatar : '', name: showNm ? $('nameInput').value.trim() : '',
         nameColor: $('nameColor').value,
-        shape: avatarShape, photoShape, photo: currentPhoto, caption: $('captionInput').value.trim()
+        shape: avatarShape, photoShape, photo: currentPhoto, caption: $('captionInput').value.trim(),
+        text: $('photoTextInput').value.trim()
       };
       upsert(obj);
     } else {
@@ -572,6 +578,7 @@
       currentPhoto = m.photo||'';
       updatePhotoPreview();
       $('captionInput').value = m.caption||'';
+      $('photoTextInput').value = m.text||'';
     } else {
       $('narrationInput').value=m.text;
       narAlign = m.align||'left';
@@ -612,7 +619,7 @@
       const sideLabel = m.side==='left' ? '왼쪽' : (m.side==='right' ? '오른쪽' : '가운데');
       tag.textContent = m.type==='narration' ? '나레이션' : (m.type==='image' ? '사진 · '+sideLabel : sideLabel);
       const txt = document.createElement('span'); txt.className='txt';
-      txt.textContent = m.type==='image' ? (m.caption || '(캡션 없음)') : m.text;
+      txt.textContent = m.type==='image' ? (m.text || m.caption || '(사진만)') : m.text;
       const actions = document.createElement('div'); actions.className='actions';
       actions.innerHTML = '<button data-a="up" title="위로">↑</button><button data-a="down" title="아래로">↓</button><button data-a="edit" title="수정">✎</button><button data-a="del" title="삭제">✕</button>';
       actions.querySelector('[data-a=up]').onclick=()=>moveItem(m.id,-1);
@@ -641,6 +648,8 @@
     stage.style.width = width+'px';
     const lc = $('leftColor').value, rc = $('rightColor').value;
     const lt = $('leftText').value, rt = $('rightText').value;
+    const bubblePhotoMaxW = Math.round(width*0.58);
+    const centerPhotoMaxW = Math.round(width*0.85);
     stage.innerHTML='';
     messages.forEach(m=>{
       const wrap = document.createElement('div'); wrap.className='msg-row';
@@ -654,16 +663,34 @@
         const photoRadius = m.photoShape==='square' ? '0px' : '14px';
         if(m.side==='center'){
           const box = document.createElement('div'); box.style.cssText='display:flex;flex-direction:column;align-items:center;';
-          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg'; photo.style.borderRadius = photoRadius;
+          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg';
+          photo.style.borderRadius = photoRadius;
+          photo.style.maxWidth = centerPhotoMaxW+'px';
+          photo.style.maxHeight = Math.round(centerPhotoMaxW*1.35)+'px';
           box.appendChild(photo);
+          if(m.text){ const t=document.createElement('div'); t.className='center-msg'; t.style.marginTop='8px'; t.textContent=m.text; box.appendChild(t); }
           if(m.caption){ const cap=document.createElement('div'); cap.className='photo-caption'; cap.style.textAlign='center'; cap.textContent=m.caption; box.appendChild(cap); }
           wrap.appendChild(box);
         } else {
           const group = document.createElement('div'); group.className='bubble-group '+m.side;
           if(m.avatar || m.name) group.appendChild(buildAvatarCol(m));
           const bcol = document.createElement('div'); bcol.className='bubble-col';
-          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg'; photo.style.borderRadius = photoRadius;
-          bcol.appendChild(photo);
+          const photoBubble = document.createElement('div'); photoBubble.className='bubble photo-bubble';
+          photoBubble.style.background = m.side==='left' ? lc : rc;
+          const photo = document.createElement('img'); photo.src = m.photo; photo.className='photo-msg in-bubble';
+          photo.style.borderRadius = photoRadius;
+          photo.style.maxWidth = bubblePhotoMaxW+'px';
+          photo.style.maxHeight = Math.round(bubblePhotoMaxW*1.35)+'px';
+          photoBubble.appendChild(photo);
+          bcol.appendChild(photoBubble);
+          if(m.text){
+            const textBubble = document.createElement('div'); textBubble.className='bubble';
+            textBubble.style.background = m.side==='left' ? lc : rc;
+            textBubble.style.color = m.side==='left' ? lt : rt;
+            const textEl = document.createElement('div'); textEl.className='text'; textEl.textContent=m.text;
+            textBubble.appendChild(textEl);
+            bcol.appendChild(textBubble);
+          }
           if(m.caption){ const cap=document.createElement('div'); cap.className='photo-caption'; cap.textContent=m.caption; bcol.appendChild(cap); }
           group.appendChild(bcol);
           wrap.appendChild(group);
