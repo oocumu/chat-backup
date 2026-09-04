@@ -102,7 +102,7 @@
   .bubble-group.right{flex-direction:row-reverse;}
   .avatar-col{display:flex;flex-direction:column;align-items:center;width:56px;flex-shrink:0;}
   .avatar-col img{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block;}
-  .avatar-col .label{font-size:13px;font-weight:700;color:#232B4D;margin-top:6px;}
+  .avatar-col .label{font-size:13px;font-weight:700;color:#232B4D;margin-top:6px;white-space:pre-line;}
   .bubble-col{max-width:70%;display:flex;flex-direction:column;}
   .bubble-group.right .bubble-col{align-items:flex-end;}
   .bubble{padding:13px 17px;border-radius:18px;line-height:1.5;}
@@ -113,7 +113,7 @@
   .bubble + .bubble{margin-top:6px;}
   .photo-msg{display:block;height:auto;}
   .photo-msg.in-bubble{display:block;}
-  .photo-caption{font-size:13px;color:#4a4a4a;margin-top:6px;}
+  .photo-caption{font-size:13px;color:#4a4a4a;margin-top:6px;white-space:pre-line;}
   .narration{font-size:14.5px;line-height:1.85;color:#262626;padding:2px 2px 0;}
   .center-msg{font-size:15px;font-weight:500;line-height:1.6;color:#262626;text-align:center;padding:2px 2px 0;}
   .spacer-top{height:10px;}
@@ -154,8 +154,7 @@
 <div class="notice-overlay" id="noticeOverlay">
   <div class="notice-box">
     <div class="notice-title">공지사항</div>
-    <div class="notice-body" id="noticeBody">
-상식적인 선 내에서만 사용해 주신다면 뭐든 크게 개의치 않습니다. 사용 문의/오류 제보에 대한 내용은 배포한 계정(@archiveanething)의 바이오 익명함으로 부탁드립니다.
+    <div class="notice-body" id="noticeBody">상식적인 선 내에서만 사용해 주신다면 뭐든 크게 개의치 않습니다. 사용 문의/오류 제보에 대한 내용은 배포한 계정(@archiveanething)의 바이오 익명함으로 부탁드립니다.
 
 모쪼록 좋은 하루 보내세요. (‾◡◝)
 
@@ -212,7 +211,7 @@
             <button data-v="square">네모</button>
           </div>
           <label>이름</label>
-          <input type="text" id="nameInput" placeholder="문구를 입력해 주세요">
+          <textarea id="nameInput" placeholder="문구를 입력해 주세요" style="min-height:38px;"></textarea>
           <label>이름 색</label>
           <div class="color-field" style="width:fit-content;">
             <input type="color" id="nameColor" value="#232B4D"><span>이름 색상</span>
@@ -241,7 +240,7 @@
       <label>같이 보낼 텍스트 (대사, 선택)</label>
       <textarea id="photoTextInput" placeholder="사진과 함께 대사로 보낼 문구를 입력해 주세요" style="min-height:44px;"></textarea>
       <label>캡션 (선택)</label>
-      <input type="text" id="captionInput" placeholder="문구를 입력해 주세요">
+      <textarea id="captionInput" placeholder="문구를 입력해 주세요" style="min-height:38px;"></textarea>
     </div>
 
     <div id="narrationFields" style="display:none;">
