@@ -192,6 +192,15 @@
         </div>
       </div>
 
+      <div class="section" id="textAlignSection">
+        <div class="section-title">텍스트 정렬 (말풍선 안)</div>
+        <div class="seg" id="textAlignSeg">
+          <button data-v="left" class="active">왼쪽</button>
+          <button data-v="center">가운데</button>
+          <button data-v="right">오른쪽</button>
+        </div>
+      </div>
+
       <div id="avatarNameWrap">
         <div class="row" style="margin-top:10px;">
           <label class="chk" style="margin-top:0;"><input type="checkbox" id="showAvatar" checked> 아바타 표시</label>
@@ -327,6 +336,7 @@
   let photoShape = 'rounded';
   let avatarShape = 'circle';
   let narAlign = 'left';
+  let textAlign = 'left';
   let lastAvatarLeft = '';
   let lastAvatarRight = '';
   let editingId = null;
@@ -335,7 +345,9 @@
 
   // ---- type / side segmented controls ----
   function updateAvatarNameWrapVisibility(){
-    $('avatarNameWrap').style.display = side==='center' ? 'none' : 'block';
+    const hide = side==='center';
+    $('avatarNameWrap').style.display = hide ? 'none' : 'block';
+    $('textAlignSection').style.display = hide ? 'none' : 'block';
   }
 
   function showFieldsFor(type){
@@ -364,6 +376,12 @@
     const b = e.target.closest('button'); if(!b) return;
     photoShape = b.dataset.v;
     [...$('photoShapeSeg').children].forEach(x=>x.classList.toggle('active', x===b));
+  });
+
+  $('textAlignSeg').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    textAlign = b.dataset.v;
+    [...$('textAlignSeg').children].forEach(x=>x.classList.toggle('active', x===b));
   });
 
   $('sideSeg').addEventListener('click', e=>{
@@ -541,7 +559,7 @@
         id: editingId || crypto.randomUUID(), type:'bubble', side,
         avatar: showAv ? currentAvatar : '', name: showNm ? $('nameInput').value.trim() : '',
         nameColor: $('nameColor').value,
-        shape: avatarShape, text
+        shape: avatarShape, text, textAlign
       };
       upsert(obj);
     } else if(blockType==='image'){
@@ -555,7 +573,7 @@
         avatar: showAv ? currentAvatar : '', name: showNm ? $('nameInput').value.trim() : '',
         nameColor: $('nameColor').value,
         shape: avatarShape, photoShape, photo: currentPhoto, caption: $('captionInput').value.trim(),
-        text: $('photoTextInput').value.trim()
+        text: $('photoTextInput').value.trim(), textAlign
       };
       upsert(obj);
     } else {
@@ -583,6 +601,8 @@
     updateAvatarPreview();
     $('showAvatar').checked = !!m.avatar;
     $('showName').checked = !!m.name;
+    textAlign = m.textAlign || 'left';
+    [...$('textAlignSeg').children].forEach(x=>x.classList.toggle('active', x.dataset.v===textAlign));
   }
 
   function editItem(id){
@@ -713,6 +733,7 @@
             textBubble.style.background = m.side==='left' ? lc : rc;
             textBubble.style.color = m.side==='left' ? lt : rt;
             const textEl = document.createElement('div'); textEl.className='text'; textEl.textContent=m.text;
+            textEl.style.textAlign = m.textAlign || 'left';
             textBubble.appendChild(textEl);
             bcol.appendChild(textBubble);
           }
@@ -732,6 +753,7 @@
           bubble.style.background = m.side==='left' ? lc : rc;
           bubble.style.color = m.side==='left' ? lt : rt;
           const text = document.createElement('div'); text.className='text'; text.textContent=m.text;
+          text.style.textAlign = m.textAlign || 'left';
           bubble.appendChild(text);
           bcol.appendChild(bubble);
           group.appendChild(bcol);
